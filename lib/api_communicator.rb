@@ -1,13 +1,9 @@
-require 'rest-client'
-require 'json'
-require 'pry'
-
-easy1 = "https://opentdb.com/api.php?amount=50&difficulty=easy"
-easy2 = "https://opentdb.com/api.php?amount=50&difficulty=easy"
-moderate1 = "https://opentdb.com/api.php?amount=50&difficulty=medium"
-moderate2 = "https://opentdb.com/api.php?amount=50&difficulty=medium"
-hard = "https://opentdb.com/api.php?amount=50&difficulty=hard"
-hard2 = "https://opentdb.com/api.php?amount=50&difficulty=hard"
+easy1 = "https://opentdb.com/api.php?amount=50&difficulty=easy&type=multiple"
+easy2 = "https://opentdb.com/api.php?amount=50&difficulty=easy&type=multiple"
+moderate1 = "https://opentdb.com/api.php?amount=50&difficulty=medium&type=multiple"
+moderate2 = "https://opentdb.com/api.php?amount=50&difficulty=medium&type=multiple"
+hard = "https://opentdb.com/api.php?amount=50&difficulty=hard&type=multiple"
+hard2 = "https://opentdb.com/api.php?amount=50&difficulty=hard&type=multiple"
 
 questions = [easy1, easy2, moderate1, moderate2, hard, hard2]
 
@@ -18,11 +14,11 @@ def question_array_from_api(api_address)
   return response_hash["results"]
 end
 
-
 def question_array_merger(questions)
  final_array = questions.map { |address| question_array_from_api(address) }
  final_array.flatten!
  final_array
+ # binding.pry
 end
 
 # GET QUESTIONS
@@ -44,7 +40,6 @@ def convert_key_to_symbol(questions)
     question_list << new
   end
   question_list
-  # binding.pry
 end
 
 formatted_questions = convert_key_to_symbol(questions)
@@ -53,7 +48,7 @@ formatted_questions = convert_key_to_symbol(questions)
 #   array.each do |v|
 #     Question.new(v)
 #   end
-# en
+# end
 
 # create_many_questions(formatted_questions)
 

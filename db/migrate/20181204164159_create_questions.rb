@@ -3,6 +3,7 @@ class CreateQuestions < ActiveRecord::Migration[5.0]
     create_table :questions do |t|
       t.string :question
       t.string :answer
+      t.string :type
       t.string :option1
       t.string :option2
       t.string :option3

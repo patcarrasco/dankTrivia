@@ -1,4 +1,24 @@
-require_relative 'config/environment'
+easy1 = "https://opentdb.com/api.php?amount=50&difficulty=easy&type=multiple"
+easy2 = "https://opentdb.com/api.php?amount=50&difficulty=easy&type=multiple"
+moderate1 = "https://opentdb.com/api.php?amount=50&difficulty=medium&type=multiple"
+moderate2 = "https://opentdb.com/api.php?amount=50&difficulty=medium&type=multiple"
+hard = "https://opentdb.com/api.php?amount=50&difficulty=hard&type=multiple"
+hard2 = "https://opentdb.com/api.php?amount=50&difficulty=hard&type=multiple"
 
-# formatted_questions
+questions = [easy1, easy2, moderate1, moderate2, hard, hard2]
+
+new_questions = convert_key_to_symbol(questions)
+
+puts "In SEEDS"
+
+
+def create_many_questions(array)
+  array.each do |hash|
+    Question.new(hash)
+    binding.pry
+  end
+end
+
+create_many_questions(new_questions)
+
 binding.pry
