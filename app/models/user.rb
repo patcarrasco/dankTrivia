@@ -16,6 +16,10 @@ class User < ActiveRecord::Base
   end
 
   def score_from_last_game?
-    see_last_game
+    last_game_id = see_last_game.id
+    GameQuestion.all.select{|gameq| gameq.game_id = last_game_id}.collect{|gameq| gameq.correct?}.inject{|sum, v| sum + v}
   end
 end
+
+
+#------------------- NOTES ----------------------#

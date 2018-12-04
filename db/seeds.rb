@@ -31,8 +31,7 @@ create_many_questions(new_questions)
 
 # CREATE USERS
 
-pat = User.new(name: "Pat Carrasco", username: "chichi", password: "password")
-steve = User.new(name: "Stephen Argentina", username: "steve", password: "password")
+pat = User.create(name: "Pat Carrasco", username: "chichi", password: "password")
+steve = User.create(name: "Stephen Argentina", username: "steve", password: "password")
 
 # CREATE GAMES
-binding.pry
