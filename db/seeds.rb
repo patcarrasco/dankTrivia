@@ -11,6 +11,7 @@ new_questions = convert_key_to_symbol(questions)
 
 puts "In SEEDS"
 
+# CREATE QUESTIONS
 
 def create_many_questions(array)
   array.each do |hash|
@@ -28,4 +29,10 @@ end
 
 create_many_questions(new_questions)
 
+# CREATE USERS
+
+pat = User.new(name: "Pat Carrasco", username: "chichi", password: "password")
+steve = User.new(name: "Stephen Argentina", username: "steve", password: "password")
+
+# CREATE GAMES
 binding.pry
