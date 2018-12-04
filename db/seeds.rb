@@ -14,8 +14,15 @@ puts "In SEEDS"
 
 def create_many_questions(array)
   array.each do |hash|
-    Question.new(hash)
-    binding.pry
+    # binding.pry
+    Question.create(
+      question: hash[:question],
+      correct_answer: hash[:correct_answer],
+      option1: hash[:option1],
+      option2: hash[:option2],
+      option3: hash[:option3],
+      difficulty: hash[:difficulty],
+      category: hash[:category])
   end
 end
 
