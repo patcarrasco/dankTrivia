@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
 
 # YO how many questions?
   def create_game(question_no)
-    Game.create(user_id: self, question_no: question_no)
+    Game.game_make_random(user_id: self, question_no: question_no)
   end
 
   def see_all_games
