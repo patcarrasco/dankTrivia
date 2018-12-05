@@ -4,12 +4,17 @@ class Game < ActiveRecord::Base
 
 
   def self.game_make_random(user_id, question_no)
-    game = Game.create(user_id: user_id, question_no: question_no)
-    question_ids = Array.new(question_no){rand(1...300)}
-    question_ids.each do |id|
-      GameQuestion.create(game_id: game.id, question_id: id)
+
+    if question_no < 10
+      puts "Can't start with less than 10"
+    else
+      game = Game.create(user_id: user_id, question_no: question_no)
+      question_ids = Array.new(question_no){rand(1...300)}
+      question_ids.each do |id|
+        GameQuestion.create(game_id: game.id, question_id: id)
+      end
+      return game
     end
-    return game
   end
 
   def self.game_make_by_difficulty(user_id, question_no, difficulty)
