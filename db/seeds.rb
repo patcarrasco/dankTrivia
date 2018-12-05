@@ -33,5 +33,6 @@ create_many_questions(new_questions)
 
 pat = User.create(name: "Pat Carrasco", username: "chichi", password: "password")
 steve = User.create(name: "Stephen Argentina", username: "steve", password: "password")
+guest = User.create(name: "Fast Boi🦔", username: "guest", password: "guest")
 
 # CREATE GAMES

@@ -9,5 +9,4 @@ gem "rest-client"
 gem "json"
 gem 'tty-prompt'
 gem 'colorize'
-gem 'catpix'
 gem 'randumb'

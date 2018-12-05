@@ -27,19 +27,8 @@ class Game < ActiveRecord::Base
 
   def score
     amt_right = questions_in_current_game.collect{|gq| gq.correct?}.count(true)
-    amt_right.to_f / questions_in_current_game.size
-  end
-
-  def right_answer(question_id)
-    current_question.correct?
-  end
-
-  def wrong_answer(question_id)
-    current_question.correct?
-  end
-
-  def current_question(current_id)
-   questions_in_current_game.select{|gq| gq.id == current_id}
+    value = amt_right.to_f / questions_in_current_game.size * 100
+    value.to_i
   end
 
 end
