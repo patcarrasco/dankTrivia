@@ -7,6 +7,10 @@ class User < ActiveRecord::Base
     self.games << Game.game_make_random(self, question_no)
   end
 
+  def create_game_by_difficulty(question_no, difficulty)
+    self.games << Game.game_make_by_difficulty(self, question_no, difficulty)
+  end
+
   def see_last_game
     self.games.last
   end
