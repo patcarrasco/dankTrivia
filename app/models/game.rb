@@ -22,7 +22,7 @@ class Game < ActiveRecord::Base
   end
 
   def questions_in_current_game
-    GameQuestion.all.select{|gq| gq.game_id == self}
+    GameQuestion.all.select{|gq| gq.game_id == self.id}
   end
 
   def score
