@@ -1,8 +1,8 @@
 def tty_home
-  TTY::Prompt.new.say("DANK TRIVIA")
-  TTY::Prompt.new.select("WELCOME TO TRIVIA") do |menu|
+  TTY::Prompt.new.select("WELCOME TO DANK TRIVIA") do |menu|
     menu.choice "Login" => -> do tty_login end
     menu.choice "Create User" => -> do tty_create_user end
+    menu.choice "Quick Play" => -> do tty_guest end
   end
 end
 
@@ -11,8 +11,15 @@ def tty_create_user
   new_username = TTY::Prompt.new.ask("Enter a Username")
   new_password = TTY::Prompt.new.mask("Enter a Password")
   $user = User.create(name:new_name, username: new_username, password: new_password)
-  # tty_main_menu
+  tty_main_menu
   TTY::Prompt.new.say("Welcome to Dank Trivia, #{$user.name}")
+end
+
+def tty_guest
+  username = "guest"
+  password = "guest"
+  $user = User.find_by(username: username, password:password)
+  tty_guest_main_menu
 end
 
 def tty_login
@@ -25,6 +32,11 @@ def tty_login
   else
     tty_main_menu
   end
+end
+
+def tty_guest_main_menu
+  TTY::Prompt.new.say("Welcome #{$user.name}")
+  new_game
 end
 
 def tty_main_menu
@@ -54,5 +66,43 @@ def new_game
   else
     $user.create_game_by_difficulty(q_amount, difficulty)
   end
+end
 
+def play_game
+  all_questions.each do |gq|
+    system "clear"
+    ask_question(gq)
+    sleep(0.5)
+    TTY::Prompt.new.ask("e n t e r   2   c o n t i n u e")
+  end
+  end_screen
+end
+
+def all_questions
+  $game = $user.games.last
+  q_list = $game.questions_in_current_game
+  q_list
+end
+
+def ask_question(gq)
+  question_instance = Question.find(gq.question_id)
+  question_options = [question_instance.correct_answer,question_instance.option1,
+    question_instance.option2, question_instance.option3].shuffle
+  value = TTY::Prompt.new.select(question_instance.question) do |option|
+    option.choice question_options[0]
+    option.choice question_options[1]
+    option.choice question_options[2]
+    option.choice question_options[3]
+  end
+  if value == question_instance.correct_answer
+    gq.update(correct?: true)
+    TTY::Prompt.new.say("Correct!! Good job goober!@!")
+  else
+    gq.update(correct?: false)
+    TTY::Prompt.new.say("Wrong answer champ!")
+  end
+end
+
+def end_screen
+  puts "You scored #{$game.score}%. Gratz!"
 end
