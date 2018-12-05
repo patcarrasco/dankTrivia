@@ -3,6 +3,7 @@ def tty_home
     menu.choice "Login" => -> do tty_login end
     menu.choice "Create User" => -> do tty_create_user end
     menu.choice "Quick Play" => -> do tty_guest end
+    menu.choice "Close Program" => -> do abort("See you later dude.") end
   end
 end
 
@@ -44,7 +45,7 @@ def tty_main_menu
     menu.choice "Play New Game" => -> do new_game end
     menu.choice "Check High Score" #=> -> do end
     menu.choice "Check Previous Games" #=> -> do end
-    menu.choice "Close Program" #=> -> do end
+    menu.choice "Close Program" => -> do abort("See you later dude.") end
   end
 end
 
@@ -73,7 +74,12 @@ def play_game
     system "clear"
     ask_question(gq)
     sleep(0.5)
-    TTY::Prompt.new.ask("e n t e r   2   c o n t i n u e")
+    choice = TTY::Prompt.new.select("n e x t") do |menu|
+      menu.choice "plz.."
+      menu.choice "do...."
+      menu.choice "not...."
+      menu.choice "quit." => -> do abort("Quitter..") end
+    end
   end
   end_screen
 end
@@ -100,9 +106,11 @@ def ask_question(gq)
   else
     gq.update(correct?: false)
     TTY::Prompt.new.say("Wrong answer champ!")
+    TTY::Prompt.new.say("Correct answer was '#{question_instance.correct_answer}'..'")
   end
 end
 
 def end_screen
   puts "You scored #{$game.score}%. Gratz!"
 end
+
