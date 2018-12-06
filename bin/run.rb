@@ -1,4 +1,6 @@
 require_relative '../config/environment'
+# require 'lolize/auto'
+
 
 def run_game
     system "clear"
@@ -15,5 +17,3 @@ while true
         menu.choice "No. I am a wimp." => -> do abort("Wow. wow. You are not so dAnk after all.") end
         end
 end
-
-

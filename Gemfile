@@ -12,3 +12,5 @@ gem 'colorize'
 gem 'randumb'
 gem 'htmlentities'
 gem 'tty-table'
+gem "lolcat"
+# gem "lolize"
