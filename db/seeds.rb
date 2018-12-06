@@ -16,7 +16,7 @@ puts "In SEEDS"
 def create_many_questions(array)
   array.each do |hash|
     # binding.pry
-    Question.create('&quot;'
+    Question.create(
       question: hash[:question],
       correct_answer: hash[:correct_answer],
       option1: hash[:option1],

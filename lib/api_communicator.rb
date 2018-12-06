@@ -31,18 +31,14 @@ def convert_key_to_symbol(questions)
   array.each do |question|
     new = {}
     question.each do |k, v|
+      string.sub!("&quot;", "''") if k.to_sym != :incorrect_answers
+      string.sub!("&#039", "''") if k.to_sym != :incorrect_answers
       new[k.to_sym] = v
-      binding.pry
       if k.to_sym == :incorrect_answers
         v.map do |string|
           string.sub!("&quot;", "''")
           string.sub!("&#039", "''")
-          string.sub!
-
         end
-
-
-
         new[:option1] = v[0]
         new[:option2] = v[1] if v.size > 1
         new[:option3] = v[2] if v.size > 1
