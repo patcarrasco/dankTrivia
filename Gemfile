@@ -10,3 +10,4 @@ gem "json"
 gem 'tty-prompt'
 gem 'colorize'
 gem 'randumb'
+gem 'htmlentities'
