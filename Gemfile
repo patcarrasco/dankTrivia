@@ -13,3 +13,9 @@ gem 'randumb'
 gem 'htmlentities'
 gem 'tty-table'
 gem "lolcat"
+gem 'catpix'
+gem 'artii'
+gem 'pastel'
+gem "audio-playback"
+
+# gem 'lolize'
