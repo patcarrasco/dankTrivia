@@ -8,14 +8,20 @@ def tty_home
 end
 
 def tty_create_user
+  system 'clear'
   new_name = TTY::Prompt.new.ask("Enter your name")
-  new_username = TTY::Prompt.new.ask("Enter a Username")
-  new_password = TTY::Prompt.new.mask("Enter a Password")
+  new_username = TTY::Prompt.new.ask("Enter a Username") do |q|
+    q.validate(/\A[a-z0-9_]{4,9}\z/, "Username must contain 4-9 characters of letters and / or numbers")
+  end
+  new_password = TTY::Prompt.new.mask("Enter a Password") do |q|
+    q.validate(/\A[a-z0-9_]{5,10}\z/, "Password must be between 5-10 characters and can contain letters and numbers")
+  end
   $user = User.create(name:new_name, username: new_username, password: new_password)
   tty_new_user_main_menu
 end
 
 def tty_guest
+  system 'clear'
   username = "guest"
   password = "guest"
   $user = User.find_by(username: username, password:password)
@@ -23,6 +29,7 @@ def tty_guest
 end
 
 def tty_login
+  system 'clear'
   username = TTY::Prompt.new.ask("Enter Username")
   password = TTY::Prompt.new.mask("Enter Password")
   $user = User.find_by(username: username, password:password)
@@ -35,11 +42,13 @@ def tty_login
 end
 
 def tty_guest_main_menu
+  system 'clear'
   TTY::Prompt.new.say("Welcome #{$user.name}")
   new_game
 end
 
 def tty_new_user_main_menu
+  system 'clear'
   TTY::Prompt.new.select("Welcome to D A N K  t r i v i a. when youre here, #{$user.name}, youre family!") do |menu|
     menu.choice "Play New Game" => -> do new_game end
     menu.choice "Check High Scores" => -> do high_scores end
@@ -49,6 +58,7 @@ def tty_new_user_main_menu
 end
 
 def tty_main_menu
+  system 'clear'
   TTY::Prompt.new.select("Welcome back #{$user.name}") do |menu|
     menu.choice "Play New Game" => -> do new_game end
     menu.choice "Check High Score" => -> do high_scores end
@@ -58,6 +68,7 @@ def tty_main_menu
 end
 
 def new_game
+  system 'clear'
   difficulty = TTY::Prompt.new.select("Choose your difficulty") do |menu|
     menu.choice "easy"
     menu.choice "medium"
@@ -86,7 +97,7 @@ def play_game
       menu.choice "next"
       menu.choice "next"
       menu.choice "next"
-      menu.choice "Rage Quit" => -> do abort("WOOOOOOOW. You suck at trivia") end
+      menu.choice "Rage Quit" => -> do abort("WoooOowooOoOoow. You suck at trivia") end
     end
   end
   end_screen
@@ -119,10 +130,11 @@ def ask_question(gq)
 end
 
 def end_screen
-  puts "You scored #{$game.score}%. Gratz!"
+  TTY::Prompt.new.say("You scored #{$game.score}%. Gratz!")
 end
 
 def high_scores
+  system 'clear'
   high_scores_list = Game.score_list
   # binding.pry
   table = TTY::Table.new ["Username", "Score"], high_scores_list
