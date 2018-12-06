@@ -1,11 +1,11 @@
-easy1 = "https://opentdb.com/api.php?amount=50&difficulty=easy&type=multiple"
-easy2 = "https://opentdb.com/api.php?amount=50&difficulty=easy&type=multiple"
-moderate1 = "https://opentdb.com/api.php?amount=50&difficulty=medium&type=multiple"
-moderate2 = "https://opentdb.com/api.php?amount=50&difficulty=medium&type=multiple"
-hard = "https://opentdb.com/api.php?amount=50&difficulty=hard&type=multiple"
-hard2 = "https://opentdb.com/api.php?amount=50&difficulty=hard&type=multiple"
+# easy1 = "https://opentdb.com/api.php?amount=50&difficulty=easy&type=multiple"
+# easy2 = "https://opentdb.com/api.php?amount=50&difficulty=easy&type=multiple"
+# moderate1 = "https://opentdb.com/api.php?amount=50&difficulty=medium&type=multiple"
+# moderate2 = "https://opentdb.com/api.php?amount=50&difficulty=medium&type=multiple"
+# hard = "https://opentdb.com/api.php?amount=50&difficulty=hard&type=multiple"
+# hard2 = "https://opentdb.com/api.php?amount=50&difficulty=hard&type=multiple"
 
-questions = [easy1, easy2, moderate1, moderate2, hard, hard2]
+# questions = [easy1, easy2, moderate1, moderate2, hard, hard2]
 
 
 def question_array_from_api(api_address)
@@ -42,14 +42,3 @@ def convert_key_to_symbol(questions)
   question_list
 end
 
-formatted_questions = convert_key_to_symbol(questions)
-
-# def create_many_questions(array)
-#   array.each do |v|
-#     Question.new(v)
-#   end
-# end
-
-# create_many_questions(formatted_questions)
-
-# binding.pry

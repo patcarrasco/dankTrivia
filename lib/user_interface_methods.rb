@@ -12,8 +12,7 @@ def tty_create_user
   new_username = TTY::Prompt.new.ask("Enter a Username")
   new_password = TTY::Prompt.new.mask("Enter a Password")
   $user = User.create(name:new_name, username: new_username, password: new_password)
-  tty_main_menu
-  TTY::Prompt.new.say("Welcome to Dank Trivia, #{$user.name}")
+  tty_new_user_main_menu
 end
 
 def tty_guest
@@ -38,6 +37,15 @@ end
 def tty_guest_main_menu
   TTY::Prompt.new.say("Welcome #{$user.name}")
   new_game
+end
+
+def tty_new_user_main_menu
+  TTY::Prompt.new.select("Welcome to D A N K  t r i v i a. when youre here, #{$user.name}, youre family!") do |menu|
+    menu.choice "Play New Game" => -> do new_game end
+    menu.choice "Check High Score" #=> -> do end
+    menu.choice "Check Previous Games" #=> -> do end
+    menu.choice "Close Program" => -> do abort("See you later dude.") end
+  end
 end
 
 def tty_main_menu
@@ -74,7 +82,7 @@ def play_game
     system "clear"
     ask_question(gq)
     sleep(0.5)
-    choice = TTY::Prompt.new.select("n e x t") do |menu|
+    choice = TTY::Prompt.new.select("p r e s s   e n t e r") do |menu|
       menu.choice "plz.."
       menu.choice "do...."
       menu.choice "not...."
@@ -106,7 +114,7 @@ def ask_question(gq)
   else
     gq.update(correct?: false)
     TTY::Prompt.new.say("Wrong answer champ!")
-    TTY::Prompt.new.say("Correct answer was '#{question_instance.correct_answer}'..'")
+    TTY::Prompt.new.say("Correct answer was '#{question_instance.correct_answer}'...")
   end
 end
 
