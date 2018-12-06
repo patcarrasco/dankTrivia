@@ -25,20 +25,35 @@ class Game < ActiveRecord::Base
     GameQuestion.all.select{|gq| gq.game_id == self.id}
   end
 
-  def score
+  def raw_score
     amt_right = questions_in_current_game.collect{|gq| gq.correct?}.count(true)
-    value = amt_right.to_f / questions_in_current_game.size * 100
-    value.to_i
-    binding.pry
+    value = "#{amt_right} / #{questions_in_current_game.size}"
+  end
+
+
+  def score
+    amt_right = questions_in_current_game.select{|gq| gq.correct?}
+    question_list = []
+    amt_right.each{|gq| question_list << Question.find(gq.question_id)}
+    points = 0
+    question_list.each do |question|
+      points += 175 if question.difficulty == "easy"
+      points += 350 if question.difficulty == "medium"
+      points += 475 if question.difficulty == "hard"
+    end
+    return points
   end
 
   def self.score_list
     high_scores = {}
     all.each do |game|
       user = User.find(game.user_id)
-      high_scores[user.username] = "#{game.score}%"
+      high_scores[user.username] = game.score
+      # bindinsg.pry
     end
-    return high_scores.sort_by {|k,v| v}.reverse[0...5]
+    high_scores.sort_by{|k,v| v}.reverse
+    # binding.pry
   end
+
 
 end

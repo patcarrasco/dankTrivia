@@ -14,6 +14,6 @@ while true
         menu.choice "Sure"
         menu.choice "Fo sure"
         menu.choice "Abso-freaking-lutely"
-        menu.choice "No. I am a wimp." => -> do abort("Wow. wow. You are not so dAnk after all.") end
+        menu.choice "No. I am a wimp.".light_magenta => -> do abort("Wow. wow. You are not so dAnk after all.".light_magenta) end
         end
 end

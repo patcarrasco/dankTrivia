@@ -4,8 +4,8 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.string :name
       t.string :username
       t.string :password
-      t.integer :highscore_percent
-      t.integer :highscore_game_id
+      t.integer :best_harvest
+      t.integer :kernel_wallet
     end
   end
 end

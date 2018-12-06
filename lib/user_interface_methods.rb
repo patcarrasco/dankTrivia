@@ -1,9 +1,12 @@
+
+
 def tty_home
   var = system "echo WELCOME TO DANK TRIVIA | lolcat -a -d 50"
-  TTY::Prompt.new.select("- - - - - - - - - - - -") do |menu|
+  TTY::Prompt.new.select("- - - - - - - - - - - -".bold) do |menu|
     menu.choice "Login" => -> do tty_login end
     menu.choice "Create User" => -> do tty_create_user end
     menu.choice "Quick Play" => -> do tty_guest end
+    menu.choice "High Scores" => -> do high_scores end
     menu.choice "Close Program" => -> do abort("See you later dude.") end
   end
 end
@@ -19,14 +22,14 @@ def tty_create_user
   new_password = TTY::Prompt.new.mask("Enter a Password --->") do |q|
     q.validate(/^\A[a-z0-9_]{5,10}\z$/, "Password must be between 5-10 characters and can contain letters and numbers")
   end
-  $user = User.create(name:new_name, username: new_username, password: new_password)
+  $user = User.create(name:new_name, username: new_username, password: new_password, best_harvest: 0, kernel_wallet: 0)
   tty_new_user_main_menu
 end
 
 def tty_guest
   system 'clear'
-  username = "guest"
-  password = "guest"
+  username = "anonymous"
+  password = "foenrgjnglj33"
   $user = User.find_by(username: username, password:password)
   tty_guest_main_menu
 end
@@ -54,8 +57,6 @@ def tty_new_user_main_menu
   system 'clear'
   TTY::Prompt.new.select("Welcome to D A N K  t r i v i a. when youre here, #{$user.name}, youre family!") do |menu|
     menu.choice "Play New Game" => -> do new_game end
-    menu.choice "Check High Scores" => -> do high_scores end
-    menu.choice "Check Previous Games" #=> -> do end
     menu.choice "Close Program" => -> do abort("See you later dude.") end
   end
 end
@@ -64,8 +65,7 @@ def tty_main_menu
   system 'clear'
   TTY::Prompt.new.select("Welcome back #{$user.name}") do |menu|
     menu.choice "Play New Game" => -> do new_game end
-    menu.choice "Check High Score" => -> do high_scores end
-    menu.choice "Check Previous Games" #=> -> do end
+    menu.choice "Check my High Score" => -> do my_high_score end
     menu.choice "Close Program" => -> do abort("See you later dude.") end
   end
 end
@@ -92,15 +92,26 @@ def new_game
 end
 
 def play_game
+  quotes = [
+    "You gotta water your plants. Nobody can water them for you.",
+    "I put cocoa butter all over my face and my iconic belly and my arms and legs. Why live rough? Live smooth.",
+    "Congratulations. You played yourself",
+    "They don't want us to win",
+    "The key is to make it.",
+    "They will try to close the door on you, just open it.",
+    "Baby, you smart. I want you to film me taking a shower.",
+    "They don’t want you to win. They don’t want you to have the No. 1 record in the country. They don’t want you to get healthy. They don’t want you to exercise. And they don’t want you to have that view."
+  ]
+
   all_questions.each do |gq|
     system "clear"
     ask_question(gq)
-    sleep(0.5)
+    sleep(0.3)
     choice = TTY::Prompt.new.select("p r e s s   e n t e r") do |menu|
       menu.choice "next question"
       menu.choice "anotha' one 🙏"
       menu.choice "anotha' one 🙏 🔑"
-      menu.choice "We da best" => -> do abort("SIKEEEEEEEEEEE") end
+      menu.choice "We da best".red.blink => -> do abort("#{quotes.sample} - DJ Khalid".red) end
     end
   end
   end_screen
@@ -134,16 +145,24 @@ def ask_question(gq)
 end
 
 def end_screen
-  TTY::Prompt.new.ok("You scored #{$game.score}%. Gratz!")
+  $user.best_score?
+  TTY::Prompt.new.ok("You obtained #{$game.score} kernels of truth. Gratz!".yellow)
+  TTY::Prompt.new.ok("In other words: you got #{$game.raw_score} right.")
 end
 
 def high_scores
-  sleep(0.2)
   system 'clear'
-  high_scores_list = Game.score_list
+  high_scores_list = Game.score_list.first(5)
   # binding.pry
   table = TTY::Table.new ["Username", "Score"], high_scores_list
   puts table.render :ascii, alignments: [:center, :center], padding: [1,1]
+  TTY::Prompt.new.ask("Press enter to return to main menu")
+  tty_home
+end
+
+def my_high_score
+  TTY::Prompt.new.say("Your best harvest was #{$user.best_harvest} kernels.")
+  TTY::Prompt.new.say("Your kernel wallet currently has #{$user.kernel_wallet} kernels of truth")
   TTY::Prompt.new.ask("Press enter to return to main menu")
   tty_main_menu
 end

@@ -21,6 +21,12 @@ class User < ActiveRecord::Base
     end
   end
 
+  def best_score?
+    if self.see_last_game.score > self.best_harvest
+      self.update(best_harvest: self.see_last_game.score)
+    end
+    self.update(kernel_wallet: (self.kernel_wallet += self.see_last_game.score))
+  end
 
 end
 
