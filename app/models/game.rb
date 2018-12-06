@@ -29,6 +29,7 @@ class Game < ActiveRecord::Base
     amt_right = questions_in_current_game.collect{|gq| gq.correct?}.count(true)
     value = amt_right.to_f / questions_in_current_game.size * 100
     value.to_i
+    binding.pry
   end
 
   def self.score_list

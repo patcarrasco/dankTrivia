@@ -114,6 +114,7 @@ end
 
 def ask_question(gq)
   question_instance = Question.find(gq.question_id)
+  colorize = Lolize::Colorizer.new
   question_options = [question_instance.correct_answer,question_instance.option1,
     question_instance.option2, question_instance.option3].shuffle
   value = TTY::Prompt.new.select(question_instance.question) do |option|
