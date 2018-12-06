@@ -31,4 +31,13 @@ class Game < ActiveRecord::Base
     value.to_i
   end
 
+  def self.score_list
+    high_scores = {}
+    all.each do |game|
+      user = User.find(game.user_id)
+      high_scores[user.username] = "#{game.score}%"
+    end
+    return high_scores.sort_by {|k,v| v}.reverse[0...5]
+  end
+
 end

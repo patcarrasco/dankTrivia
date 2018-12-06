@@ -42,7 +42,7 @@ end
 def tty_new_user_main_menu
   TTY::Prompt.new.select("Welcome to D A N K  t r i v i a. when youre here, #{$user.name}, youre family!") do |menu|
     menu.choice "Play New Game" => -> do new_game end
-    menu.choice "Check High Score" #=> -> do end
+    menu.choice "Check High Scores" => -> do high_scores end
     menu.choice "Check Previous Games" #=> -> do end
     menu.choice "Close Program" => -> do abort("See you later dude.") end
   end
@@ -51,7 +51,7 @@ end
 def tty_main_menu
   TTY::Prompt.new.select("Welcome back #{$user.name}") do |menu|
     menu.choice "Play New Game" => -> do new_game end
-    menu.choice "Check High Score" #=> -> do end
+    menu.choice "Check High Score" => -> do high_scores end
     menu.choice "Check Previous Games" #=> -> do end
     menu.choice "Close Program" => -> do abort("See you later dude.") end
   end
@@ -83,10 +83,10 @@ def play_game
     ask_question(gq)
     sleep(0.5)
     choice = TTY::Prompt.new.select("p r e s s   e n t e r") do |menu|
-      menu.choice "plz.."
-      menu.choice "do...."
-      menu.choice "not...."
-      menu.choice "quit." => -> do abort("Quitter..") end
+      menu.choice "next"
+      menu.choice "next"
+      menu.choice "next"
+      menu.choice "Rage Quit" => -> do abort("WOOOOOOOW. You suck at trivia") end
     end
   end
   end_screen
@@ -122,3 +122,11 @@ def end_screen
   puts "You scored #{$game.score}%. Gratz!"
 end
 
+def high_scores
+  high_scores_list = Game.score_list
+  # binding.pry
+  table = TTY::Table.new ["Username", "Score"], high_scores_list
+  puts table.render :ascii, alignments: [:center, :center], padding: [1,1]
+  TTY::Prompt.new.ask("Press enter to return to main menu")
+  tty_main_menu
+end
