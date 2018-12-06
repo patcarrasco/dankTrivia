@@ -1,3 +1,5 @@
+
+
 easy1 = "https://opentdb.com/api.php?amount=50&difficulty=easy&type=multiple"
 easy2 = "https://opentdb.com/api.php?amount=50&difficulty=easy&type=multiple"
 moderate1 = "https://opentdb.com/api.php?amount=50&difficulty=medium&type=multiple"
@@ -30,7 +32,17 @@ def convert_key_to_symbol(questions)
     new = {}
     question.each do |k, v|
       new[k.to_sym] = v
+      binding.pry
       if k.to_sym == :incorrect_answers
+        v.map do |string|
+          string.sub!("&quot;", "''")
+          string.sub!("&#039", "''")
+          string.sub!
+
+        end
+
+
+
         new[:option1] = v[0]
         new[:option2] = v[1] if v.size > 1
         new[:option3] = v[2] if v.size > 1
@@ -50,6 +62,6 @@ formatted_questions = convert_key_to_symbol(questions)
 #   end
 # end
 
-# create_many_questions(formatted_questions)
+#create_many_questions(formatted_questions)
 
-# binding.pry
+binding.pry
