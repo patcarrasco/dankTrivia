@@ -1,14 +1,14 @@
 
 def home_logo
   system 'clear'
-  system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat -a -s 10"
-  system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat -a -s 10"
-  system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat -a -s 10"
+  system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat -a -d 2 -s 10"
+  system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat -a -d 2 -s 10"
+  system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat -a -d 2 -s 10"
   system "echo"
   system "artii DANK TRIVIA | lolcat -a -s 100"
-  system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat"
-  system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat"
-  system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat"
+  system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat -a -d 2 -s 10"
+  system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat -a -d 2 -s 10"
+  system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat -a -d 2 -s 10"
 end
 
 def logo
@@ -118,6 +118,7 @@ def new_game
   else
     $user.create_game_by_difficulty(q_amount, difficulty)
   end
+  play_game
 end
 
 def play_game
@@ -260,5 +261,17 @@ def q_amount_speach(q_amount)
   else
     phrase = ["you are a champion of the people", "we are going to be here for a while", "hope you like hearing, what is love, eighteen times in a row."]
     system "say '#{phrase.sample}'"
+  end
+end
+
+
+def play_again?
+  TTY::Prompt.new.select("Would you like to play again?") do |menu|
+    menu.choice "Sure" => -> do tty_main_menu end
+    menu.choice "Fo sure" => -> do tty_main_menu end
+    menu.choice "Abso-freaking-lutely" => -> do tty_main_menu end
+    menu.choice "No. I am a wimp.".light_magenta => -> do 
+      system "say 'See you later wimp'"
+      abort("See you later wimp!") end
   end
 end
