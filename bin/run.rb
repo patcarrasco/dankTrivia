@@ -1,6 +1,7 @@
 require_relative '../config/environment'
 
-
+song = ['audio/love.ogg', 'audio/barney.ogg', 'audio/metallica.ogg', 'audio/nevergunna.ogg',
+        'audio/redstheme.ogg','audio/silverbells.ogg', 'audio/tetristheme.ogg']
 options = {
   buffer_size: 2000,
   is_looping: true
@@ -16,7 +17,7 @@ options = {
 #   end
 # end
 
-AudioPlayback.play("audio/love.ogg", options)
+AudioPlayback.play("#{song.sample}", options)
 
 def run_game
   system "clear"

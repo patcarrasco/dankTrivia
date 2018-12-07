@@ -67,7 +67,7 @@ end
 def tty_new_user_main_menu
   phrase = ["Welcome to the club, #{$user.name}", "Welcome to dank trivia. Only rule. no talking about dank trivia", "I am your father", "I do nott, get, french toast", "do not leave me like all the others"]
   logo
-  system "say '#{phrase}'"
+  system "say '#{phrase.sample}'"
   TTY::Prompt.new.select("Welcome to D A N K  t r i v i a. when you're here, #{$user.name}, you're family!") do |menu|
     menu.choice "Play New Game" => -> do new_game end
     menu.choice "Close Program" => -> do abort("See you later dude.") end
@@ -124,7 +124,8 @@ def play_game
     "The key is to make it.",
     "They will try to close the door on you, just open it.",
     "Baby, you smart. I want you to film me taking a shower.",
-    "They don’t want you to win. They don’t want you to have the No. 1 record in the country. They don’t want you to get healthy. They don’t want you to exercise. And they don’t want you to have that view."
+    "They don’t want you to win. They don’t want you to have the No. 1 record in the country. They don’t want you to get healthy. They don’t want you to exercise. And they don’t want you to have that view.",
+    "Bless up."
   ]
 
   all_questions.each do |gq|
@@ -139,11 +140,11 @@ def play_game
       menu.choice "next question"
       menu.choice "anotha' one 🙏"
       menu.choice "anotha' one 🙏 🔑"
-      menu.choice "We da best".light_red.blink => -> do
+      menu.choice "We da best".light_cyan.blink => -> do
         
         quote = quotes.sample
         system "say #{quote}"
-        abort("#{quote} - DJ Khalid".light_red)
+        abort("#{quote} - DJ Khalid".light_cyan)
       end
     end
   end
@@ -157,7 +158,8 @@ def all_questions
 end
 
 def say_question(question_instance)
-  system "say '#{question_instance.question}'"
+  fixed_question = question_instance.question.gsub("'",'').gsub('"',"")
+  system "say '#{fixed_question}'"
   nil
 end  
 
@@ -221,9 +223,9 @@ end
 def my_high_score
   TTY::Prompt.new.say("Your best harvest was #{$user.best_harvest} kernels.")
   TTY::Prompt.new.say("Your kernel wallet currently has #{$user.kernel_wallet} kernels of truth")
-  TTY::Prompt.new.ask("Press enter to return to main menu")
   sleep 1
   system "say 'Your best harvest was #{$user.best_harvest} kernels of truth.'"
+  TTY::Prompt.new.ask("Press enter to return to main menu")
   tty_main_menu
 end
 
