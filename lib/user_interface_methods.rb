@@ -1,7 +1,14 @@
 
 def home_logo
   system 'clear'
-  system "artii DANK TRIVIA | lolcat -s 75 -d 10"
+  system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat -a -s 10"
+  system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat -a -s 10"
+  system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat -a -s 10"
+  system "echo"
+  system "artii DANK TRIVIA | lolcat -a -s 100"
+  system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat"
+  system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat"
+  system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat"
 end
 
 def logo
@@ -11,10 +18,8 @@ end
 
 def tty_home
   home_logo
-  system "echo '\t\t\tWelcome to Dank Trivia' | lolcat -d 10"
-  system "say 'welcome to dank trivia'"
-  system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat -a -d 10"
-  TTY::Prompt.new.select("".red.bold) do |menu|
+  system "say 'Welcome to Dank Trivia'"
+  TTY::Prompt.new.select("Welcome to Dank Trivia".red.bold) do |menu|
     menu.choice "Login" => -> do tty_login end
     menu.choice "Create User" => -> do tty_create_user end
     menu.choice "Quick Play" => -> do tty_guest end
@@ -52,7 +57,7 @@ def tty_login
   $user = User.find_by(username: username, password:password)
   if $user == nil
     TTY::Prompt.new.say("That username or password does not exist. Please try again.")
-    sleep 1
+    sleep 2
     tty_home
   else
     tty_main_menu
@@ -161,7 +166,7 @@ def say_question(question_instance)
   fixed_question = question_instance.question.gsub("'",'').gsub('"',"")
   system "say '#{fixed_question}'"
   nil
-end  
+end
 
 def ask_question_voice(gq)
   question_instance = Question.find(gq.question_id)
@@ -216,7 +221,7 @@ def high_scores
   high_scores_list = Game.score_list.first(5)
   table = TTY::Table.new ["Username", "Kernels"], high_scores_list
   puts table.render(:ascii, alignments: [:center, :center], padding: [1,1]).yellow
-  TTY::Prompt.new.ask("Press enter to return to main menu")
+  TTY::Prompt.new.ask("Press enter to return to the main menu".red)
   tty_home
 end
 
@@ -225,7 +230,7 @@ def my_high_score
   TTY::Prompt.new.say("Your kernel wallet currently has #{$user.kernel_wallet} kernels of truth")
   sleep 1
   system "say 'Your best harvest was #{$user.best_harvest} kernels of truth.'"
-  TTY::Prompt.new.ask("Press enter to return to main menu")
+  TTY::Prompt.new.ask("Press enter to return to your home screen".red)
   tty_main_menu
 end
 
@@ -242,7 +247,7 @@ def difficulty_speach(difficulty)
   else
     phrase = ["living on the edge, thats dank", "ahh, just like in the old country", "ANYTHING"]
     system "say '#{phrase.sample}'"
-  end  
+  end
 end
 
 def q_amount_speach(q_amount)
@@ -255,5 +260,5 @@ def q_amount_speach(q_amount)
   else
     phrase = ["you are a champion of the people", "we are going to be here for a while", "hope you like hearing, what is love, eighteen times in a row."]
     system "say '#{phrase.sample}'"
-  end  
+  end
 end

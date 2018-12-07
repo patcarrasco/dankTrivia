@@ -31,9 +31,10 @@ done = false
 until done
   run_game
   TTY::Prompt.new.select("Would you like to play again?") do |menu|
-    menu.choice "Sure"
-    menu.choice "Fo sure"
-    menu.choice "Abso-freaking-lutely"
-    menu.choice "No. I am a wimp.".light_magenta => -> do done = true end
+    menu.choice "Sure" => -> do new_game end
+    menu.choice "Fo sure" => -> do new_game end
+    menu.choice "Abso-freaking-lutely" => -> do new_game end
+    menu.choice "No. I am a wimp.".light_magenta => -> do tty_home end
   end
+  done = true
 end
