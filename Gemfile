@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+# frozen_string_literal true:
 source "https://rubygems.org"
 
 gem "sinatra-activerecord"
@@ -15,3 +15,7 @@ gem "lolcat"
 gem 'artii'
 gem 'pastel'
 gem "audio-playback"
+gem 'ruby-audio'
+
+# gem instaled 'ruby_audio' as well as brew installed two packages (libsndfile --universal  and   portaudio).
+# these extra packages allowed the music to play

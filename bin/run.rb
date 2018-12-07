@@ -1,21 +1,11 @@
 require_relative '../config/environment'
-# require 'lolize/auto'
 
-# Catpix::print_image "pokemon.png",
-#   :limit_x => 1.0,
-#   :limit_y => 0,
-#   :center_x => true,
-#   :center_y => true,
-#   :bg => "white",
-#   :bg_fill => true,
-#   :resolution => "low"
 
 options = {
   buffer_size: 2000,
   is_looping: true
 }
 
-# $audio = AudioPlayback.play("audio/love.ogg", options)
 
 # def audio_p(var)
 #   if var
