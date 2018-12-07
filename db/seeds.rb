@@ -106,6 +106,7 @@ create_many_questions(formatted_questions)
 
 # CREATE USERS
 
-pat = User.create(name: "Pat Carrasco", username: "chichi", password: "password", best_harvest: 0, kernel_wallet: 0)
-steve = User.create(name: "Stephen Argentina", username: "steve", password: "password", best_harvest: 0, kernel_wallet: 0)
-guest = User.create(name: "Fast Boi🦔", username: "anonymous", password: "foenrgjnglj33", best_harvest: 0, kernel_wallet: 0)
+pat = User.create(name: "Pat Carrasco", username: "chichi", password: "password", best_harvest: 755, kernel_wallet: 1200)
+steve = User.create(name: "Stephen Argentina", username: "steve", password: "password", best_harvest: 850, kernel_wallet: 1500)
+guest = User.create(name: "Fast Boi🦔", username: "anonymous", password: "foenrgjnglj33", best_harvest: 200, kernel_wallet: 350)
+

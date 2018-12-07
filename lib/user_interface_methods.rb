@@ -1,7 +1,14 @@
 
 def home_logo
   system 'clear'
-  system "artii DANK TRIVIA | lolcat -s 75 -d 10"
+  system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat -a -s 10"
+  system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat -a -s 10"
+  system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat -a -s 10"
+  system "echo"
+  system "artii DANK TRIVIA | lolcat -a -s 100"
+  system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat"
+  system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat"
+  system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat"
 end
 
 def logo
@@ -11,10 +18,8 @@ end
 
 def tty_home
   home_logo
-  system "echo '\t\t\tWelcome to Dank Trivia' | lolcat -d 10"
-  system "say 'welcome to dank trivia'"
-  system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat -a -d 10"
-  TTY::Prompt.new.select("".red.bold) do |menu|
+  system "say 'Welcome to Dank Trivia'"
+  TTY::Prompt.new.select("Welcome to Dank Trivia".red.bold) do |menu|
     menu.choice "Login" => -> do tty_login end
     menu.choice "Create User" => -> do tty_create_user end
     menu.choice "Quick Play" => -> do tty_guest end
@@ -60,12 +65,15 @@ def tty_login
 end
 
 def tty_guest_main_menu
+  system 'say "Ok fast boi, lets go"'
   new_game
 end
 
 def tty_new_user_main_menu
+  phrase = ["Welcome to the club, #{$user.name}", "Welcome to dank trivia. Only rule. no talking about dank trivia", "I am your father", "I do nott, get, french toast", "do not leave me like all the others"]
   logo
-  TTY::Prompt.new.select("Welcome to D A N K  t r i v i a. when you're here, #{$user.name}, youre family!") do |menu|
+  system "say '#{phrase}'"
+  TTY::Prompt.new.select("Welcome to D A N K  t r i v i a. when you're here, #{$user.name}, you're family!") do |menu|
     menu.choice "Play New Game" => -> do new_game end
     menu.choice "Close Program" => -> do abort("See you later dude.") end
   end
@@ -89,12 +97,21 @@ def new_game
     menu.choice "hard"
     menu.choice "any"
   end
+  difficulty_speach(difficulty)
+
   logo
   q_amount = TTY::Prompt.new.select("How many questions?".cyan) do |menu|
     menu.choice 10
     menu.choice 20
     menu.choice 30
   end.to_i
+  q_amount_speach(q_amount)
+
+  $voice_on = TTY::Prompt.new.select("Would you like questions to use text-to-speech?") do |menu|
+    menu.choice "yes"
+    menu.choice "heck yes"
+    menu.choice "no"
+  end
 
   if difficulty == "any"
     $user.create_game(q_amount)
@@ -117,17 +134,21 @@ def play_game
 
   all_questions.each do |gq|
     logo
-    ask_question(gq)
+    if $voice_on == "no"
+      ask_question(gq)
+    else
+      ask_question_voice(gq)
+    end
     sleep(0.3)
     choice = TTY::Prompt.new.select("<<>><<>><<>><<>><<>><<>><<>><<>><<>><<>><<>><<>><<>><<>><<>><<>><<>><<>><<>>".magenta) do |menu|
       menu.choice "next question"
       menu.choice "anotha' one 🙏"
       menu.choice "anotha' one 🙏 🔑"
       menu.choice "We da best".light_red.blink => -> do
-        # audio_p(false)
+
         quote = quotes.sample
         system "say #{quote}"
-        abort("#{quote} - DJ Khalid".light_red)
+        abort("#{quote} - DJ Khaled".light_red)
       end
     end
   end
@@ -140,9 +161,35 @@ def all_questions
   q_list
 end
 
+def say_question(question_instance)
+  system "say '#{question_instance.question}'"
+  nil
+end
+
+def ask_question_voice(gq)
+  question_instance = Question.find(gq.question_id)
+  question_options = [question_instance.correct_answer,question_instance.option1,
+    question_instance.option2, question_instance.option3].shuffle
+  value = TTY::Prompt.new.select("#{question_instance.question.light_cyan}#{say_question(question_instance)}") do |option|
+    option.choice question_options[0]
+    option.choice question_options[1]
+    option.choice question_options[2]
+    option.choice question_options[3]
+  end
+  if value == question_instance.correct_answer
+    gq.update(correct?: true)
+    TTY::Prompt.new.say("Correct!! Good job, goober!@!".green)
+    system "say 'Correct!'"
+  else
+    gq.update(correct?: false)
+    TTY::Prompt.new.say("Wrong answer, champ!".light_yellow)
+    system "say 'Wrong answer champ!'"
+    TTY::Prompt.new.say("Correct answer was '#{question_instance.correct_answer}'...".light_red)
+  end
+end
+
 def ask_question(gq)
   question_instance = Question.find(gq.question_id)
-  # colorize = Lolize::Colorizer.new
   question_options = [question_instance.correct_answer,question_instance.option1,
     question_instance.option2, question_instance.option3].shuffle
   value = TTY::Prompt.new.select(question_instance.question.light_cyan) do |option|
@@ -172,13 +219,44 @@ def high_scores
   high_scores_list = Game.score_list.first(5)
   table = TTY::Table.new ["Username", "Kernels"], high_scores_list
   puts table.render(:ascii, alignments: [:center, :center], padding: [1,1]).yellow
-  TTY::Prompt.new.ask("Press enter to return to main menu")
+  TTY::Prompt.new.ask("Press enter to return to the main menu".red)
   tty_home
 end
 
 def my_high_score
   TTY::Prompt.new.say("Your best harvest was #{$user.best_harvest} kernels.")
   TTY::Prompt.new.say("Your kernel wallet currently has #{$user.kernel_wallet} kernels of truth")
-  TTY::Prompt.new.ask("Press enter to return to main menu")
+  TTY::Prompt.new.ask("Press enter to return to your home screen".red)
+  sleep 1
+  system "say 'Your best harvest was #{$user.best_harvest} kernels of truth.'"
   tty_main_menu
+end
+
+def difficulty_speach(difficulty)
+  if difficulty == 'easy'
+    phrase = ["not dank", "no es moy calliennte", "dang", "what are you, a baby?", "you can not handle the sauce", "Baby, baby, baby, ohh"]
+    system "say '#{phrase.sample}'"
+  elsif difficulty == 'medium'
+    phrase = ["alright, solid choice", "not bad", "trust the sauce", "you make me feel so young", "like, totally"]
+    system "say '#{phrase.sample}'"
+  elsif difficulty == 'hard'
+    phrase = ["dank", "thats ganster", "moy calliennte", "ok, lets see how good you really are hotshot", "dang", "wow, someones confident"]
+    system "say '#{phrase.sample}'"
+  else
+    phrase = ["living on the edge, thats dank", "ahh, just like in the old country", "ANYTHING"]
+    system "say '#{phrase.sample}'"
+  end
+end
+
+def q_amount_speach(q_amount)
+  if q_amount == 10
+    phrase = ["only ten?", "only ten? wow", "really? only ten?", "do you have somewhere to be?", "i would like a small order of questions. hold the mayo"]
+    system "say '#{phrase.sample}'"
+  elsif q_amount == 20
+    phrase = ["nice", "you look nice today", "are you working out?", "seriously, are you working out?"]
+    system "say '#{phrase.sample}'"
+  else
+    phrase = ["you are a champion of the people", "we are going to be here for a while", "hope you like hearing, what is love, eighteen times in a row."]
+    system "say '#{phrase.sample}'"
+  end
 end
