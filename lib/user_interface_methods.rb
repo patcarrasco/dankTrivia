@@ -52,6 +52,7 @@ def tty_login
   $user = User.find_by(username: username, password:password)
   if $user == nil
     TTY::Prompt.new.say("That username or password does not exist. Please try again.")
+    sleep 2
     tty_home
   else
     tty_main_menu
