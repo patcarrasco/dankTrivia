@@ -1,7 +1,7 @@
 require_relative '../config/environment'
 
 song = ['audio/love.ogg', 'audio/barney.ogg', 'audio/metallica.ogg', 'audio/nevergunna.ogg',
-        'audio/redstheme.ogg','audio/silverbells.ogg', 'audio/tetristheme.ogg']
+        'audio/redstheme.ogg','audio/silverbells.ogg']
 options = {
   buffer_size: 50000,
   is_looping: true
@@ -27,8 +27,6 @@ end
 
 system "echo ...........loading the dankest of questions | lolcat"
 # audio_p(true)
-done = false
-until done
+loop do
   run_game
-  done = true
 end

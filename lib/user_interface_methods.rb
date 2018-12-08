@@ -126,11 +126,11 @@ def play_game
     "You gotta water your plants. Nobody can water them for you.",
     "I put cocoa butter all over my face and my iconic belly and my arms and legs. Why live rough? Live smooth.",
     "Congratulations. You played yourself",
-    "They don't want us to win",
+    "They dont want us to win",
     "The key is to make it.",
     "They will try to close the door on you, just open it.",
     "Baby, you smart. I want you to film me taking a shower.",
-    "They don’t want you to win. They don’t want you to have the No. 1 record in the country. They don’t want you to get healthy. They don’t want you to exercise. And they don’t want you to have that view.",
+    "They dont want you to win. They dont want you to have the No. 1 record in the country. They dont want you to get healthy. They dont want you to exercise. And they dont want you to have that view.",
     "Bless up."
   ]
 
