@@ -1,23 +1,9 @@
 require_relative '../config/environment'
 
 song = ['audio/love.ogg', 'audio/barney.ogg', 'audio/metallica.ogg', 'audio/nevergunna.ogg',
-        'audio/redstheme.ogg','audio/silverbells.ogg']
-options = {
-  buffer_size: 50000,
-  is_looping: true
-}
+        'audio/redstheme.ogg']
 
-
-# def audio_p(var)
-#   if var
-#     $audio
-#   else
-#     $audio = nil
-#     $audio
-#   end
-# end
-
-AudioPlayback.play("#{song.sample}", options)
+AudioPlayback.play("#{song.sample}", is_looping: true)
 
 def run_game
   system "clear"
@@ -25,8 +11,6 @@ def run_game
   play_again?
 end
 
-system "echo ...........loading the dankest of questions | lolcat"
-# audio_p(true)
 loop do
   run_game
 end

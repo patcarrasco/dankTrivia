@@ -2,12 +2,16 @@
 def home_logo
   system 'clear'
   system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat -a -d 2 -s 10"
+  system "echo"
   system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat -a -d 2 -s 10"
+  system "echo"
   system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat -a -d 2 -s 10"
   system "echo"
   system "artii DANK TRIVIA | lolcat -a -s 100"
   system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat -a -d 2 -s 10"
+  system "echo"
   system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat -a -d 2 -s 10"
+  system "echo"
   system "echo '>< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< >< ><' | lolcat -a -d 2 -s 10"
 end
 
@@ -30,11 +34,11 @@ end
 
 def tty_create_user
   logo
-  new_name = TTY::Prompt.new.ask("Enter your name") do |q|
-    q.validate(/^[a-zA-Z ]{3,20}$/, "Name must be between 3 and 20 characters")
+  new_name = TTY::Prompt.new.ask("Enter your name --->") do |q|
+    q.validate(/^[a-zA-Z ]{3,20}$/, "Name must be between 3 and 20 characters and only letters")
   end
   new_username = TTY::Prompt.new.ask("Enter a Username --->") do |q|
-    q.validate(/^\A[a-z0-9_]{4,9}\z$/, "Username must contain 4-9 characters of letters and / or numbers")
+    q.validate(/^\A[a-z0-9_]{4,10}\z$/, "Username must contain 4-10 characters of lower_case letters and / or numbers")
   end
   new_password = TTY::Prompt.new.mask("Enter a Password --->") do |q|
     q.validate(/^\A[a-z0-9_]{5,10}\z$/, "Password must be between 5-10 characters and can contain letters and numbers")
@@ -56,9 +60,10 @@ def tty_login
   password = TTY::Prompt.new.mask("Enter Password --->")
   $user = User.find_by(username: username, password:password)
   if $user == nil
-    TTY::Prompt.new.say("That username or password does not exist. Please try again.")
-    sleep 2
-    tty_home
+    TTY::Prompt.new.select("That username or password does not exist.".light_red.blink) do |menu|
+      menu.choice "Try again?".green => -> do tty_login end
+      menu.choice "I quit. Take me home.".light_red => -> do tty_home end
+      end
   else
     tty_main_menu
   end
@@ -70,12 +75,12 @@ def tty_guest_main_menu
 end
 
 def tty_new_user_main_menu
-  phrase = ["Welcome to the club, #{$user.name}", "Welcome to dank trivia. Only rule. no talking about dank trivia", "I am your father", "I do nott, get, french toast", "do not leave me like all the others"]
+  phrase = ["Welcome to the club, #{$user.name}", "Welcome to dank trivia. Only rule... No talking about dank trivia", "I am your father", "I do nott, get, french toast", "do not leave me like all the others", "You can call me daaddy"]
   logo
   system "say '#{phrase.sample}'"
   TTY::Prompt.new.select("Welcome to D A N K  t r i v i a. when you're here, #{$user.name}, you're family!") do |menu|
     menu.choice "Play New Game" => -> do new_game end
-    menu.choice "Close Program" => -> do abort("See you later dude.") end
+    menu.choice "Log out" => -> do tty_home end
   end
 end
 
@@ -85,6 +90,7 @@ def tty_main_menu
   TTY::Prompt.new.select("Welcome back #{$user.name}") do |menu|
     menu.choice "Play New Game" => -> do new_game end
     menu.choice "Check my High Score" => -> do my_high_score end
+    menu.choice "Log Out" => -> do tty_home end
     menu.choice "Close Program" => -> do abort("See you later dude.") end
   end
 end
@@ -130,7 +136,7 @@ def play_game
     "The key is to make it.",
     "They will try to close the door on you, just open it.",
     "Baby, you smart. I want you to film me taking a shower.",
-    "They dont want you to win. They dont want you to have the No. 1 record in the country. They dont want you to get healthy. They dont want you to exercise. And they dont want you to have that view.",
+    "They dont want you to win. They dont want you to have the number one record in the country... They dont want you to get healthy... They dont want you to exercise... And they dont want you to have that view.",
     "Bless up."
   ]
 
@@ -147,7 +153,7 @@ def play_game
       menu.choice "anotha' one 🙏"
       menu.choice "anotha' one 🙏 🔑"
       menu.choice "We da best".light_cyan.blink => -> do
-        
+
         quote = quotes.sample
         system "say #{quote}"
         abort("#{quote} - DJ Khalid".light_cyan)
@@ -237,7 +243,7 @@ end
 
 def difficulty_speach(difficulty)
   if difficulty == 'easy'
-    phrase = ["not dank", "no es moy calliennte", "dang", "what are you, a baby?", "you can not handle the sauce", "Baby, baby, baby, ohh"]
+    phrase = ["not dank", "no es moy calliennte", "dang", "what are you, a baby?", "you can not handle the sauce", "Baby, baby, baby. O"]
     system "say '#{phrase.sample}'"
   elsif difficulty == 'medium'
     phrase = ["alright, solid choice", "not bad", "trust the sauce", "you make me feel so young", "like, totally"]
@@ -253,10 +259,10 @@ end
 
 def q_amount_speach(q_amount)
   if q_amount == 10
-    phrase = ["only ten?", "only ten? wow", "really? only ten?", "do you have somewhere to be?", "i would like a small order of questions. hold the mayo"]
+    phrase = ["only ten?", "only ten? woooooow", "really? only ten?", "do you have somewhere to be?", "i would like a small order of questions. hold the mayo"]
     system "say '#{phrase.sample}'"
   elsif q_amount == 20
-    phrase = ["nice", "you look nice today", "are you working out?", "seriously, are you working out?"]
+    phrase = ["niceee", "you look niceee today", "are you working out?", "seriously, are you working out?", "thicc"]
     system "say '#{phrase.sample}'"
   else
     phrase = ["you are a champion of the people", "we are going to be here for a while", "hope you like hearing, what is love, eighteen times in a row."]
@@ -270,8 +276,9 @@ def play_again?
     menu.choice "Sure" => -> do tty_main_menu end
     menu.choice "Fo sure" => -> do tty_main_menu end
     menu.choice "Abso-freaking-lutely" => -> do tty_main_menu end
-    menu.choice "No. I am a wimp.".light_magenta => -> do 
-      system "say 'See you later wimp'"
-      abort("See you later wimp!") end
+    menu.choice "No. Take me home.".light_magenta => -> do
+      system "say 'Okay. Wimp'"
+      tty_home
+    end
   end
 end
