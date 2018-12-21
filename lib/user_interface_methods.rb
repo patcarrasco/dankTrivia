@@ -35,7 +35,7 @@ end
 def tty_create_user
   logo
   new_name = TTY::Prompt.new.ask("Enter your name --->") do |q|
-    q.validate(/^[a-zA-Z ]{3,20}$/, "Name must be between 3 and 20 characters and only letters")
+    q.validate(/^[a-zA-Z ]{3,20}$/, "Name must be between 3 and 20 characters and only letters and can contain spaces")
   end
   new_username = TTY::Prompt.new.ask("Enter a Username --->") do |q|
     q.validate(/^\A[a-z0-9_]{4,10}\z$/, "Username must contain 4-10 characters of lower_case letters and / or numbers")
@@ -148,15 +148,16 @@ def play_game
       ask_question_voice(gq)
     end
     sleep(0.3)
-    choice = TTY::Prompt.new.select("<<>><<>><<>><<>><<>><<>><<>><<>><<>><<>><<>><<>><<>><<>><<>><<>><<>><<>><<>>".magenta) do |menu|
+    TTY::Prompt.new.select("<<>><<>><<>><<>><<>><<>><<>><<>><<>><<>><<>><<>><<>><<>><<>><<>><<>><<>><<>>".magenta) do |menu|
       menu.choice "next question"
       menu.choice "anotha' one 🙏"
       menu.choice "anotha' one 🙏 🔑"
       menu.choice "We da best".light_cyan.blink => -> do
 
         quote = quotes.sample
+        TTY::Prompt.new.say("#{quote} - DJ Khalid".light_cyan)
         system "say #{quote}"
-        abort("#{quote} - DJ Khalid".light_cyan)
+        abort()
       end
     end
   end
