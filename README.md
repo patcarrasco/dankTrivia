@@ -1,9 +1,11 @@
 # Dank Trivia
 
-A trivia game built using Ruby and Active-Record. Questions are sourced using an API [Open Trivia Database](https://opentdb.com/).
+A command-line trivia game built using Ruby and Active-Record. Questions are sourced using an API [Open Trivia Database](https://opentdb.com/).
 
 ## Installation
-vgjcvjgcv
+
+Clone the application to your preferred destination:
+
 ## Usage
 
 Dank trivia requires the following packages:
@@ -20,7 +22,8 @@ Dank trivia requires the following packages:
 - pastel
 - audio-playback
 
-After installing, run the following bash command in terminal:
+In terminal, run the following to start the game:
+
 ```Ruby
 ruby bin/run.rb # When in project directory
 ```
